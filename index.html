@@ -103,7 +103,7 @@ button:disabled{
 
 <script>
 const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbzaQLrWdvHtBzpNW4927XXsapxKjNV3ahA1f3HFfuX5Chlfa-T3Sv998LyenNLRdjsJ/exec";
+  "https://script.google.com/macros/s/AKfycbwpFrecMekRFC6OZ-d6Vr0Tjdwyj-esr-pOL6-vi2LDkRjwx-Fp5l7CzUhyjpsLhOHx/exec";
 
 const form = document.getElementById("form");
 const textarea = document.getElementById("question");
@@ -137,4 +137,20 @@ form.addEventListener("submit", async (e) => {
       throw new Error(data.error || "failed");
     }
 
-textarea.value = ""; msg.textContent = "קלטנו בהצלחה את השאלה שלך!"; msg.classList.add("success"); } catch (err) { console.error(err); msg.textContent = "אופס... יש לנו שגיאה, תפתחו לנו באג?"; msg.classList.add("error"); } btn.disabled = false; btn.textContent = "שליחה"; }); </script> </body> </html>
+    textarea.value = "";
+    msg.textContent = "קלטנו בהצלחה את השאלה שלך!";
+    msg.classList.add("success");
+  
+  } catch (err) {
+    console.error(err);
+    msg.textContent = "אופס... יש לנו שגיאה, תפתחו לנו באג?";
+    msg.classList.add("error");
+  }
+  
+  btn.disabled = false;
+  btn.textContent = "שליחה";
+});
+
+</script>
+</body>
+</html>
