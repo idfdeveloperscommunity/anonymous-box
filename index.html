@@ -18,7 +18,7 @@
   --error:#ff5c7a;
 }
 
-*{box-sizing:border-box;margin:0;padding:0;}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
   min-height:100vh;
@@ -42,7 +42,7 @@ body{
 }
 
 h1{font-size:1.5rem;margin-bottom:6px;}
-p{color:var(--muted);margin-bottom:16px;}
+p{color:var(--muted);margin-bottom:16px;line-height:1.5;}
 
 textarea{
   width:100%;
@@ -52,7 +52,6 @@ textarea{
   border:1px solid var(--border);
   background:rgba(0,0,0,0.3);
   color:white;
-  resize:none;
   font-size:15px;
 }
 
@@ -80,20 +79,6 @@ button:disabled{
 
 .success{color:var(--success);}
 .error{color:var(--error);}
-
-.spinner{
-  width:16px;
-  height:16px;
-  border:2px solid rgba(255,255,255,0.3);
-  border-top-color:white;
-  border-radius:50%;
-  display:inline-block;
-  animation:spin .8s linear infinite;
-}
-
-@keyframes spin{
-  to{transform:rotate(360deg);}
-}
 </style>
 </head>
 
@@ -101,6 +86,7 @@ button:disabled{
 
 <div class="card">
   <h1>התיבה האנונימית</h1>
+
   <p>
     מתביישים לשאול משהו בקהילה?<br />
     ספרו לנו מה מעניין אתכם ונשאל במקומכם
@@ -116,7 +102,8 @@ button:disabled{
 </div>
 
 <script>
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxhdIKVJRqf7ThbqQ9WySNub_OoiIAT2QOZSXd-zGfbUsjNm4tIv2wSrNNnJHsNaUc_/exec";
+const WEB_APP_URL =
+  "https://script.google.com/macros/s/AKfycbzaQLrWdvHtBzpNW4927XXsapxKjNV3ahA1f3HFfuX5Chlfa-T3Sv998LyenNLRdjsJ/exec";
 
 const form = document.getElementById("form");
 const textarea = document.getElementById("question");
@@ -130,35 +117,24 @@ form.addEventListener("submit", async (e) => {
   if (!question) return;
 
   btn.disabled = true;
-  btn.textContent = "שליחה...";
+  btn.textContent = "שולח...";
 
   msg.textContent = "";
   msg.className = "message";
 
   try {
+    const params = new URLSearchParams();
+    params.append("question", question);
+
     const res = await fetch(WEB_APP_URL, {
       method: "POST",
-      body: `question=${question}`
+      body: params
     });
 
     const data = await res.json();
 
-    if (!data.success) throw new Error(data.error);
+    if (!data.success) {
+      throw new Error(data.error || "failed");
+    }
 
-    textarea.value = "";
-    msg.textContent = "קלטנו בהצלחה את השאלה שלך!";
-    msg.classList.add("success");
-
-  } catch (err) {
-    console.error(err);
-    msg.textContent = "אופס... יש לנו שגיאה, תפתחו לנו באג?";
-    msg.classList.add("error");
-  }
-
-  btn.disabled = false;
-  btn.textContent = "שליחה";
-});
-</script>
-
-</body>
-</html>
+textarea.value = ""; msg.textContent = "קלטנו בהצלחה את השאלה שלך!"; msg.classList.add("success"); } catch (err) { console.error(err); msg.textContent = "אופס... יש לנו שגיאה, תפתחו לנו באג?"; msg.classList.add("error"); } btn.disabled = false; btn.textContent = "שליחה"; }); </script> </body> </html>
